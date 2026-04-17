@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Optional, List
+from typing import Optional, List, Any
 
 from pydantic import BaseModel, field_validator
 
@@ -155,9 +155,9 @@ class Bcra(BaseModel):
     Mto_deuda_total_gp_9m:Optional[int]
     Mto_deuda_total_gp_12m:Optional[int]
     Es_marca_endeudamiento:Optional[int]
-    Id_entidades_deuda: Optional[List[str]] #Lista de que tipo??
-    Sit_deuda_entidades: Optional[List[str]] #Lista de que tipo??
-    Mto_deuda_entidades:Optional[List[float]]
+    Id_entidades_deuda: Optional[List[int]] #Lista de que tipo??
+    Sit_deuda_entidades: Optional[List[int]] #Lista de que tipo??
+    Mto_deuda_entidades: Optional[List[float]]
     Es_marca_moroso_ex: Optional[int]
 
 class Bcra_cr(BaseModel):

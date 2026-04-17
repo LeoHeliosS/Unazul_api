@@ -7,6 +7,7 @@ from app.core.endpoints import consultar_riesgo_experian
 from app.core.logger import logger
 from app.core.security import api_key_auth
 from app.models.experian_model import ExperianJsonModel
+from app.repositories.auditoria_repository import guardar_auditoria
 from app.services.cliente_service import get_features
 from app.services.patch_json import patch_json
 from app.utils.validators import validar_cuit
@@ -67,6 +68,8 @@ async def riesgo_cliente_endpoint(
         result = patch_json(body, data)
         response = await consultar_riesgo_experian(result)
 
+        guardar_auditoria( cuit, 'OK', result, response)
+
         return {
             "status": "success",
             "data": response
@@ -76,4 +79,5 @@ async def riesgo_cliente_endpoint(
         raise
     except Exception as e:
         logger.error(f"Error: {e}")
+        guardar_auditoria( cuit, 'ERROR', result, response)
         raise HTTPException(status_code=500, detail="No encontrado")

@@ -3,10 +3,15 @@ from app.models.cliente_model import *
 
 def normalizar_para_pydantic(modelo_cls, datos_planos: dict):
     datos_normalizados = {}
+
     for nombre_campo, info_campo in modelo_cls.model_fields.items():
         valor = datos_planos.get(nombre_campo.lower())
+        if isinstance(valor, str) and ';' in valor:
+            try:
+                valor = [float(x.strip()) for x in valor.split(';') if x.strip()]
+            except ValueError:
+                pass
         es_tipo_lista = "List" in str(info_campo.annotation) or "list" in str(info_campo.annotation)
-
         if es_tipo_lista:
             if valor in [None, '0', 0, '']:
                 datos_normalizados[nombre_campo] = []
@@ -20,6 +25,7 @@ def normalizar_para_pydantic(modelo_cls, datos_planos: dict):
     return datos_normalizados
 
 def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
+
     datos_afip = normalizar_para_pydantic(AfipModel, fila_db)
     datos_bcra = normalizar_para_pydantic(Bcra, fila_db)
     datos_persona = normalizar_para_pydantic(PersonaHumana, fila_db)
@@ -44,9 +50,6 @@ def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
     datos_morosidad = normalizar_para_pydantic(Morosidad, fila_db)
     datos_bases_externas = normalizar_para_pydantic(Basesexternas, fila_db)
     datos_filler = normalizar_para_pydantic(Filler, fila_db)
-
-
-
 
     # Construimos la estructura anidada
     return InputModel(

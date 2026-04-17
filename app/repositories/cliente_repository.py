@@ -23,10 +23,6 @@ def fetch_features(cuit: str):
     result = dict(zip(columns, row))
     print("RESULT:", result)
     cliente_json = mapear_fila_a_cliente(result)
-    #print("PRUEBA:", cliente_json.model_dump_json(indent=4))
-
-
-    #print(data_anidada.model_dump_json(indent=4))
 
     cursor.close()
     release_connection(conn)
