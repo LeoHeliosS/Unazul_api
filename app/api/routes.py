@@ -58,26 +58,24 @@ async def riesgo_cliente_endpoint(
         raise HTTPException(status_code=400, detail="CUIT inválido")
 
     try:
-        data = get_features(cuit)
 
+        #GET -> COMPARO CONTRA FRONT -> INSERT -> EXPERIAN
+        data = get_features(cuit)
         if not data:
             raise HTTPException(status_code=404, detail="No encontrado")
-
         data = data.model_dump(exclude_unset=True)
         body = body.model_dump()
-        result = patch_json(body, data)
-        response = await consultar_riesgo_experian(result)
-
-        guardar_auditoria( cuit, 'OK', result, response)
-
+        body["DAJSONDocumentV2"]["Input"] = patch_json(body["DAJSONDocumentV2"]["Input"], data)
+        #INSERT OR UPDATE
+        response = await consultar_riesgo_experian(body)
+        guardar_auditoria( cuit, 'OK', body, response)
         return {
             "status": "success",
             "data": response
         }
-
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error: {e}")
-        guardar_auditoria( cuit, 'ERROR', result, response)
+        guardar_auditoria( cuit, 'ERROR', body, response)
         raise HTTPException(status_code=500, detail="No encontrado")

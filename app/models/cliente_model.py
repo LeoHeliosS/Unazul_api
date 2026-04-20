@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional, List, Any
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 
 
 class InputModel(BaseModel):
@@ -43,7 +43,7 @@ class DatosPersonales(BaseModel):
     Persona_humana: PersonaHumana
 
 class PerfilTecnico(BaseModel):
-    Acredita_Haberes: Optional[AcreditaHaberes] = None #NO_VIENE_EN_EL_EJEMPLO!!!!!!!!!!
+    Acredita_haberes: Optional[AcreditaHaberes] #NO_VIENE_EN_EL_EJEMPLO!!!!!!!!!!
     Anses: Anses
     Bcra: Bcra
     Bcra_cr: Bcra_cr

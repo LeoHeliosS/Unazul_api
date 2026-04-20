@@ -5,6 +5,7 @@ def normalizar_para_pydantic(modelo_cls, datos_planos: dict):
     datos_normalizados = {}
 
     for nombre_campo, info_campo in modelo_cls.model_fields.items():
+        print(nombre_campo, info_campo)
         valor = datos_planos.get(nombre_campo.lower())
         if isinstance(valor, str) and ';' in valor:
             try:
@@ -62,7 +63,7 @@ def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
                 Persona_humana = PersonaHumana(**datos_persona)
             ),
             Perfil_Tecnico=PerfilTecnico(
-                Acredita_Haberes=AcreditaHaberes(**datos_acredita),
+                Acredita_haberes=AcreditaHaberes(**datos_acredita),
                 Anses = Anses(**datos_anses),
                 Bcra = Bcra(**datos_bcra),
                 Bcra_cr=Bcra_cr(**datos_bcra_cr),
