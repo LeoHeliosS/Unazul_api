@@ -8,6 +8,7 @@ from app.core.logger import logger
 from app.core.security import api_key_auth
 from app.models.experian_model import ExperianJsonModel
 from app.repositories.auditoria_repository import guardar_auditoria
+from app.repositories.cliente_repository import upsert_experian_data
 from app.services.cliente_service import get_features
 from app.services.patch_json import patch_json
 from app.utils.validators import validar_cuit
@@ -61,12 +62,19 @@ async def riesgo_cliente_endpoint(
 
         #GET -> COMPARO CONTRA FRONT -> INSERT -> EXPERIAN
         data = get_features(cuit)
+
         if not data:
             raise HTTPException(status_code=404, detail="No encontrado")
         data = data.model_dump(exclude_unset=True)
+        print('DATA', data)
         body = body.model_dump()
+
+        #REVISAR PARA SOLO PISAR LOS CASOS NULOS O VACIOS EN EL BODY!!!!!!!!!!!!!!!!!!!
+
         body["DAJSONDocumentV2"]["Input"] = patch_json(body["DAJSONDocumentV2"]["Input"], data)
         #INSERT OR UPDATE
+        print('Input', body["DAJSONDocumentV2"]["Input"])
+        upsert_experian_data(body["DAJSONDocumentV2"]["Input"])
         response = await consultar_riesgo_experian(body)
         guardar_auditoria( cuit, 'OK', body, response)
         return {

@@ -3,9 +3,7 @@ from app.models.cliente_model import *
 
 def normalizar_para_pydantic(modelo_cls, datos_planos: dict):
     datos_normalizados = {}
-
     for nombre_campo, info_campo in modelo_cls.model_fields.items():
-        print(nombre_campo, info_campo)
         valor = datos_planos.get(nombre_campo.lower())
         if isinstance(valor, str) and ';' in valor:
             try:
