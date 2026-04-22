@@ -49,8 +49,13 @@ class PerfilTecnico(BaseModel):
     Bcra_cr: Bcra_cr
     Cheques: Cheques
     Veraz:  Veraz
-    Id_tipo_cliente: Optional[list[int]]
+    Id_tipo_cliente: Optional[List[int]]
     Fecha_alta_cliente: Optional[str]
+    @field_validator('Fecha_alta_cliente', mode='before')
+    def convertir_a_string(cls, v):
+        if isinstance(v, date):
+            return v.isoformat()  # Convierte 1979-11-27 (date) a "1979-11-27" (str)
+        return v
     Id_banco_cuenta: Optional[int]
     Id_segmento_comercial: Optional[int]# null,
     Id_cartera_comercial: Optional[int] #null,
