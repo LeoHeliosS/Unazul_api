@@ -4,9 +4,10 @@ from app.models.cliente_model import InputModel
 from typing import Optional, List
 from pydantic import BaseModel, field_validator
 
-
-class ExperianJsonModel(BaseModel):
-    DAJSONDocumentV2:DAJSONDocumentV2Model
+class OcontrolModel(BaseModel):
+    ALIAS: Optional[str]
+    SIGNATURE: Optional[str]
+    DALOGLEVEL: Optional[int]
 
 class DAJSONDocumentV2Model(BaseModel):
     OCONTROL: OcontrolModel
@@ -14,7 +15,8 @@ class DAJSONDocumentV2Model(BaseModel):
     Input: InputModel
     Resultado: ResultadoModel
 
-class OcontrolModel(BaseModel):
-    ALIAS: Optional[str]
-    SIGNATURE: Optional[str]
-    DALOGLEVEL: Optional[int]
+
+class ExperianJsonModel(BaseModel):
+    DAJSONDocumentV2:DAJSONDocumentV2Model
+
+

@@ -85,5 +85,6 @@ async def riesgo_cliente_endpoint(
         raise
     except Exception as e:
         logger.error(f"Error: {e}")
-        guardar_auditoria( cuit, 'ERROR', body, response)
+        #VALIDAR QUE EL RESPONSE este sino validar response
+        guardar_auditoria( cuit, 'ERROR', body, e)
         raise HTTPException(status_code=500, detail="No encontrado")
