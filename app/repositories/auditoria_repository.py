@@ -1,6 +1,6 @@
 import json
 
-from app.db import get_connection
+from app.db import get_connection, release_connection
 
 
 def guardar_auditoria(cuit, estado_consulta, request_data, response_data):
@@ -35,4 +35,5 @@ def guardar_auditoria(cuit, estado_consulta, request_data, response_data):
 
     finally:
         cursor.close()
-        conn.close()
+        release_connection(conn)
+

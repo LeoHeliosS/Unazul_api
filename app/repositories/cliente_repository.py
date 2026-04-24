@@ -99,6 +99,6 @@ def upsert_experian_data(json_data):
         print(f"Error en Upsert Manual: {e}")
     finally:
         cursor.close()
-        conn.close()
+        release_connection(conn)
 #def fetch_cliente(cuit: str):
  #   return ("a","b","c","d","e","f","g","h","i","j")
