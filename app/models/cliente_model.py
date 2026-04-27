@@ -239,6 +239,12 @@ class Compra_De_Cartera(BaseModel):
     Es_pp_vigente_ccart: Optional[int]
     Capital_origen_ccart: Optional[int]
     Fecha_alta_ccart_vigente: Optional[str]
+    @field_validator('Fecha_alta_ccart_vigente', mode='before')
+    def convertir_a_string(cls, v):
+        if isinstance(v, date):
+            return v.isoformat()
+        return v
+
     Mto_deuda_ccart_vigente: Optional[int]
     Nro_cuota_ccart_vigente: Optional[int]
     Q_cuotas_total_ccart: Optional[int]

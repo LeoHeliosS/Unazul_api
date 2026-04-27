@@ -6,11 +6,12 @@ from app.config import settings
 from app.core.endpoints import consultar_riesgo_experian
 from app.core.logger import logger
 from app.core.security import api_key_auth
+from app.models.cliente_model import InputModel
 from app.models.experian_model import ExperianJsonModel
 from app.repositories.auditoria_repository import guardar_auditoria
 from app.repositories.cliente_repository import upsert_experian_data
 from app.services.cliente_service import get_features
-from app.services.patch_json import patch_json
+from app.services.patch_json import patch_json, clean_nones_with_model
 from app.utils.validators import validar_cuit
 
 router = APIRouter()
@@ -62,21 +63,23 @@ async def riesgo_cliente_endpoint(
 
         #GET -> COMPARO CONTRA FRONT -> INSERT -> EXPERIAN
         data = get_features(cuit)
-
         if not data:
             raise HTTPException(status_code=404, detail="No encontrado")
-        data = data.model_dump(exclude_unset=True)
+
+        data_dict = data.model_dump(exclude_unset=True)
         print('DATA', data)
-        body = body.model_dump()
-
+        body_dict = body.model_dump()
         #REVISAR PARA SOLO PISAR LOS CASOS NULOS O VACIOS EN EL BODY!!!!!!!!!!!!!!!!!!!
+        input_front = body_dict["DAJSONDocumentV2"]["Input"]
+        mixed_data= patch_json(input_front, data_dict)
 
-        body["DAJSONDocumentV2"]["Input"] = patch_json(body["DAJSONDocumentV2"]["Input"], data)
+        final_input_clean = clean_nones_with_model(mixed_data, InputModel)
+        body_dict["DAJSONDocumentV2"]["Input"] = final_input_clean
         #INSERT OR UPDATE
-        print('Input', body["DAJSONDocumentV2"]["Input"])
-        upsert_experian_data(body["DAJSONDocumentV2"]["Input"])
-        response = await consultar_riesgo_experian(body)
-        guardar_auditoria( cuit, 'OK', body, response)
+        print('Input', body_dict["DAJSONDocumentV2"]["Input"])
+        upsert_experian_data(body_dict["DAJSONDocumentV2"]["Input"])
+        response = await consultar_riesgo_experian(body_dict)
+        guardar_auditoria( cuit, 'OK', body_dict, response)
         return {
             "status": "success",
             "data": response
@@ -86,5 +89,5 @@ async def riesgo_cliente_endpoint(
     except Exception as e:
         logger.error(f"Error: {e}")
         #VALIDAR QUE EL RESPONSE este sino validar response
-        guardar_auditoria( cuit, 'ERROR', body, e)
+        guardar_auditoria( cuit, 'ERROR', body_dict, e)
         raise HTTPException(status_code=500, detail="No encontrado")

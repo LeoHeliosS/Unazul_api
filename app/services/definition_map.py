@@ -66,6 +66,11 @@ def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
     datos_bases_externas = normalizar_para_pydantic(Basesexternas, fila_db)
     datos_filler = normalizar_para_pydantic(Filler, fila_db)
 
+    fecha_raw = fila_db.get("fecha_alta_cliente")
+    if fecha_raw:
+        Fecha_alta_cliente = fecha_raw.strftime('%Y%m%d')
+    else:
+        Fecha_alta_cliente = "19000101"
 
     # Construimos la estructura anidada
     return InputModel(
@@ -85,7 +90,7 @@ def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
                 Cheques=Cheques(**datos_cheques),
                 Veraz=Veraz(**datos_veraz),
                 Id_tipo_cliente=normalizar_fila_individual(fila_db.get('id_tipo_cliente')),
-                Fecha_alta_cliente=fila_db.get("fecha_alta_cliente"),
+                Fecha_alta_cliente=Fecha_alta_cliente,
                 Id_banco_cuenta=fila_db.get("id_banco_cuenta"),
                 Id_segmento_comercial=fila_db.get("id_segmento_comercial"),
                 Id_cartera_comercial=fila_db.get("id_cartera_comercial"),
@@ -107,7 +112,7 @@ def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
                 Reprogramados=Reprogramados(**datos_reprogramados),
                 Mto_deuda_pp_vigente = normalizar_fila_individual(fila_db.get("mto_deuda_pp_vigente")),
                 Nro_cuota_pp_vigente = normalizar_fila_individual(fila_db.get("nro_cuota_pp_vigente")),
-                Fecha_alta_pp_vigente = fila_db.get("fecha_alta_pp_vigente"),
+                Fecha_alta_pp_vigente = normalizar_fila_individual(fila_db.get("fecha_alta_pp_vigente")),
                 Q_cuotas_total = normalizar_fila_individual(fila_db.get("q_cuotas_total")),
                 Q_cuotas_pagas = normalizar_fila_individual(fila_db.get("q_cuotas_pagas")),
                 Mto_cuota_debit_haberes = normalizar_fila_individual(fila_db.get("mto_cuota_debit_haberes")),
