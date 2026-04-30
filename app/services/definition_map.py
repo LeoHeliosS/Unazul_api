@@ -7,7 +7,7 @@ def normalizar_para_pydantic(modelo_cls, datos_planos: dict):
         valor = datos_planos.get(nombre_campo.lower())
         if isinstance(valor, str) and ';' in valor:
             try:
-                valor = [float(x.strip()) for x in valor.split(';') if x.strip()]
+                valor = [x.strip() for x in valor.split(';') if x.strip()]
             except ValueError:
                 pass
         es_tipo_lista = "List" in str(info_campo.annotation) or "list" in str(info_campo.annotation)
@@ -31,7 +31,7 @@ def normalizar_fila_individual(fila_db):
         id_tipo_cliente_final = []
     elif not isinstance(val_tipo_cliente, list):
         if isinstance(val_tipo_cliente, str) and ';' in val_tipo_cliente:
-            id_tipo_cliente_final = [int(x.strip()) for x in val_tipo_cliente.split(';') if x.strip()]
+            id_tipo_cliente_final = [x.strip() for x in val_tipo_cliente.split(';') if x.strip()]
         else:
             id_tipo_cliente_final = [val_tipo_cliente]
     else:
@@ -65,7 +65,6 @@ def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
     datos_morosidad = normalizar_para_pydantic(Morosidad, fila_db)
     datos_bases_externas = normalizar_para_pydantic(Basesexternas, fila_db)
     datos_filler = normalizar_para_pydantic(Filler, fila_db)
-
     fecha_raw = fila_db.get("fecha_alta_cliente")
     if fecha_raw:
         Fecha_alta_cliente = fecha_raw.strftime('%Y%m%d')

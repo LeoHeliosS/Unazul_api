@@ -8,12 +8,12 @@ from pydantic import BaseModel, field_validator, ConfigDict
 
 
 class Basesexternas(BaseModel):
-    Politica_riesgo: Optional[int]
-    Segmento_riesgos: Optional[int]
+    Politica_riesgo: Optional[str]
+    Segmento_riesgos: Optional[str]
     Mto_haber_informado_empleador: Optional[int]
-    Ponderador: Optional[int]
-    Codigo_limite_visa: Optional[int]
-    Cuit_informado_empleador: Optional[int]
+    Ponderador: Optional[str]
+    Codigo_limite_visa: Optional[str]
+    Cuit_informado_empleador: Optional[str]
     Nombre_informado_empleador: Optional[str]
     Banco_calificador: Optional[str]
     Politica_credito: Optional[str]
@@ -76,11 +76,11 @@ class AcreditaHaberes(BaseModel):
     Mto_prom_haberes_acreditados_trim_gp: Optional[int]
     Mto_haber_acreditado_gp: Optional[int]
     Fecha_ult_hab_acreditado: Optional[List[str]]
-    Id_convenio: Optional[List[int]]
+    Id_convenio: Optional[List[str]]
     Rel_ingreso_mensual_imvym: Optional[int]
 
 class Anses(BaseModel):
-    Nro_beneficio_anses: Optional[List[int]]
+    Nro_beneficio_anses: Optional[List[str]]
     Mto_beneficio_anses: Optional[List[float]]
 
 class Bcra(BaseModel):
@@ -116,8 +116,8 @@ class Bcra(BaseModel):
     Mto_deuda_total_gp_9m: Optional[int]
     Mto_deuda_total_gp_12m: Optional[int]
     Es_marca_endeudamiento: Optional[int]
-    Id_entidades_deuda: Optional[List[int]]
-    Sit_deuda_entidades: Optional[List[int]]
+    Id_entidades_deuda: Optional[List[str]]
+    Sit_deuda_entidades: Optional[List[str]]
     Mto_deuda_entidades: Optional[List[float]]
     Es_marca_moroso_ex: Optional[int]
 
@@ -156,54 +156,59 @@ class Cheques(BaseModel):
     Mto_cheq_rech_bco_sf_pagos_24m: Optional[int]
 
 class Veraz(BaseModel):
-    Vz_nro_cuil: Optional[int]
+    Vz_nro_cuil: Optional[str]
     Vz_dto_validado: Optional[int]
     Vz_score_riesgo: Optional[int]
-    Vz_score_poblacion: Optional[int]
-    Vz_geonse: Optional[int]
+    Vz_score_poblacion: Optional[str]
+    Vz_geonse: Optional[str]
     Vz_edad: Optional[int]
-    Vz_sexo: Optional[int]
-    Vz_nombre_apellido: Optional[int]
-    Vz_validacion_identidad: Optional[int]
-    Vz_obra_social_titular: Optional[int]
-    Vz_cat_monotributo: Optional[int]
-    Vz_actividad_autonomos: Optional[int]
-    Vz_marca_actividad: Optional[int]
-    Vz_income_predictor: Optional[int]
-    Vz_cp: Optional[int]
-    Vz_q_productos_sit_2_bcra: Optional[int]
-    Vz_q_productos_sit_2_bcra_ult_60m: Optional[int]
-    Vz_q_meses_desde_ult_sit_mayor_igual_2: Optional[int]
-    Vz_q_antiguedad_meses_tc_activa: Optional[int]
-    Vz_q_prestamos_activos: Optional[int]
-    Vz_max_saldo_mto_pp_ult_3m: Optional[int]
-    Vz_q_cons_dist_ent_ult_12m: Optional[int]
-    Vz_q_meses_ult_cons_financiera: Optional[int]
-    Vz_q_meses_ult_cons_tec: Optional[int]
-    Vz_q_cons_fin_ult_6m: Optional[int]
-    Vz_actividad_empleador: Optional[int]
-    Vz_q_meses_desde_ult_sit_2: Optional[int]
-    Vz_max_limite_tc: Optional[int]
-    Vz_grupo_bco_max_limite_tc: Optional[int]
-    Vz_compromiso_pp_tc: Optional[int]
-    Vz_cap_activ_autonomos: Optional[int]
-    Vz_cons_ult_6m: Optional[int]
-    Vz_cap_activ_empleador: Optional[int]
-    Vz_prod_sit_bcra_mayor_a_1_ult_60m: Optional[int]
-    Vz_pre_saldos_total_activas_ult_3m: Optional[int]
-    Vz_suma_lim_compra_tc_ult_6m: Optional[int]
-    Vz_tarjeta_saldo_suma: Optional[int]
-    Vz_bureau_tarjetas_saldo_maximo_ult_12m: Optional[int]
+    Vz_sexo: Optional[str]
+    Vz_nombre_apellido: Optional[str]
+    Vz_validacion_identidad: Optional[str]
+    Vz_obra_social_titular: Optional[str]
+    Vz_cat_monotributo: Optional[str]
+    Vz_actividad_autonomos: Optional[str]
+    Vz_marca_actividad: Optional[str]
+    Vz_income_predictor: Optional[str]
+    Vz_cp: Optional[str]
+    Vz_q_productos_sit_2_bcra: Optional[str]
+    Vz_q_productos_sit_2_bcra_ult_60m: Optional[str]
+    Vz_q_meses_desde_ult_sit_mayor_igual_2: Optional[str]
+    Vz_q_antiguedad_meses_tc_activa: Optional[str]
+    Vz_q_prestamos_activos: Optional[str]
+    Vz_max_saldo_mto_pp_ult_3m: Optional[str]
+    Vz_q_cons_dist_ent_ult_12m: Optional[str]
+    Vz_q_meses_ult_cons_financiera: Optional[str]
+    Vz_q_meses_ult_cons_tec: Optional[str]
+    Vz_q_cons_fin_ult_6m: Optional[str]
+    Vz_actividad_empleador: Optional[str]
+    Vz_q_meses_desde_ult_sit_2: Optional[str]
+    Vz_max_limite_tc: Optional[str]
+    Vz_grupo_bco_max_limite_tc: Optional[str]
+    Vz_compromiso_pp_tc: Optional[str]
+    Vz_cap_activ_autonomos: Optional[str]
+    Vz_cons_ult_6m: Optional[str]
+    Vz_cap_activ_empleador: Optional[str]
+    Vz_prod_sit_bcra_mayor_a_1_ult_60m: Optional[str]
+    Vz_pre_saldos_total_activas_ult_3m: Optional[str]
+    Vz_suma_lim_compra_tc_ult_6m: Optional[str]
+    Vz_tarjeta_saldo_suma: Optional[str]
+    Vz_bureau_tarjetas_saldo_maximo_ult_12m: Optional[str]
     Vz_fecha_actualizacion: Optional[str]
-    Vz_ult_modelo_actualizado: Optional[int]
+    @field_validator('Vz_fecha_actualizacion', mode='before')
+    def convertir_a_string(cls, v):
+        if isinstance(v, date):
+            return v.isoformat()
+        return v
+    Vz_ult_modelo_actualizado: Optional[str]
 
 class Perfil(BaseModel):
-    Id_tipo_cliente_mes_1: Optional[list[int]]
-    Id_tipo_cliente_mes_2: Optional[list[int]]
-    Id_tipo_cliente_mes_3: Optional[list[int]]
+    Id_tipo_cliente_mes_1: Optional[list[str]]
+    Id_tipo_cliente_mes_2: Optional[list[str]]
+    Id_tipo_cliente_mes_3: Optional[list[str]]
     Es_socio: Optional[int]
     Es_socio_mto_presunto: Optional[int]
-    Es_socio_segmento_ccial: Optional[int]
+    Es_socio_segmento_ccial: Optional[str]
 
 class PerfilTecnico(BaseModel):
     Acredita_haberes: Optional[AcreditaHaberes]
@@ -212,7 +217,7 @@ class PerfilTecnico(BaseModel):
     Bcra_cr: Bcra_cr
     Cheques: Cheques
     Veraz: Veraz
-    Id_tipo_cliente: Optional[List[int]]
+    Id_tipo_cliente: Optional[List[str]]
     Fecha_alta_cliente: Optional[str]
 
     @field_validator('Fecha_alta_cliente', mode='before')
@@ -222,8 +227,8 @@ class PerfilTecnico(BaseModel):
         return v
 
     Id_banco_cuenta: Optional[int]
-    Id_segmento_comercial: Optional[int]
-    Id_cartera_comercial: Optional[int]
+    Id_segmento_comercial: Optional[str]
+    Id_cartera_comercial: Optional[str]
     Id_sucursal_origen: Optional[int]
     Id_provincia: Optional[int]
     Score_nosis_empleador: Optional[int]
@@ -311,7 +316,7 @@ class Cuenta_Sueldo(BaseModel):
     Nro_cuenta_sueldo: Optional[int]
     Fecha_alta_cuenta_sueldo: Optional[str]
     Es_cuenta_sueldo: Optional[int]
-    Tipo_cuenta_sueldo: Optional[int]
+    Tipo_cuenta_sueldo: Optional[str]
     Producto_cuenta_sueldo: Optional[str]
 
 class Caja_De_Ahorro(BaseModel):
@@ -340,10 +345,10 @@ class Plazo_Fijo(BaseModel):
 
 class Tarjetas(BaseModel):
     Fecha_aumento_limite_transitorio: Optional[str]
-    Nro_cuenta_tc: Optional[list[int]]
-    Nro_sucursal_cuenta_tc: Optional[list[int]]
-    Tipo_plastico_tc: Optional[list[int]]
-    Marca_tc: Optional[list[int]]
+    Nro_cuenta_tc: Optional[list[str]]
+    Nro_sucursal_cuenta_tc: Optional[list[str]]
+    Tipo_plastico_tc: Optional[list[str]]
+    Marca_tc: Optional[list[str]]
     Mto_limite_compras_cuotas: Optional[int]
     Mto_saldo_deuda_total: Optional[int]
     Mto_abonado: Optional[list[int]]
@@ -424,7 +429,7 @@ class Ant_negativo(BaseModel):
     Mto_embargos_bcra: Optional[int]
     Mto_embargos_arbe: Optional[int]
     Es_marca_cartera_vendida: Optional[int]
-    Sem_indicador_banca: Optional[int]
+    Sem_indicador_banca: Optional[str]
     Es_dni_cuestionado: Optional[int]
     Es_cliente_factura_apocrifa: Optional[int]
     Es_baja_contable: Optional[int]
@@ -444,7 +449,7 @@ class Antecedentes_Negativos(BaseModel):
     Ant_negativo: Ant_negativo
 
 class Morosidad(BaseModel):
-    Mto_deuda_total_cliente: Optional[int]
+    Mto_deuda_total_cliente: Optional[float]
     Mto_deuda_total_cliente_gp: Optional[int]
     Max_dias_mora_ult_mes: Optional[list[int]]
     Max_dias_mora_ult_3m: Optional[list[int]]
