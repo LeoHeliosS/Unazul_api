@@ -1,3 +1,4 @@
+from app.core.afip.afipCore import cargar_info_afip
 from app.db import get_connection, release_connection
 #from app.models.cliente_model import Cliente, DatosImpositivos, Afip
 from app.services.definition_map import mapear_fila_a_cliente
@@ -23,7 +24,7 @@ def flatten_json(data, flat_dict=None):
 
     return flat_dict
 
-def fetch_features(cuit: str):
+async def fetch_features(cuit: str):
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -43,7 +44,8 @@ def fetch_features(cuit: str):
 
     result = dict(zip(columns, row))
     print("RESULT:", result)
-    cliente_json = mapear_fila_a_cliente(result)
+    #data_afip = await cargar_info_afip(cuit)
+    cliente_json = mapear_fila_a_cliente(result)# ,data_afip)
 
     cursor.close()
     release_connection(conn)

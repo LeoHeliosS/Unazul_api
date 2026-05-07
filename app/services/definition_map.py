@@ -39,7 +39,47 @@ def normalizar_fila_individual(fila_db):
 
     return id_tipo_cliente_final
 
-def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
+def mapear_json_a_afip_model(json_data: dict) -> AfipModel:
+    dg = json_data.get("datosGenerales", {})
+    dm = json_data.get("datosMonotributo", {})
+    drg = json_data.get("datosRegimenGeneral", {})
+
+    # convertir strings "SI"/"NO" a 1/0
+    to_bit = lambda v: 1 if str(v).upper() == "SI" else 0
+
+    # 1 - Actividad Principal (Regimen General o Monotributo)
+    actividad_obj = dm.get("actividadMonotributista") or (drg.get("actividad", [{}])[0] if drg.get("actividad") else {})
+    id_actividad = actividad_obj.get("idActividad")
+
+    # 2 - Categoría Monotributo
+    cat_mono = dm.get("categoriaMonotributo", {})
+
+    # 3 - Impuestos (IVA / Ganancias)
+    impuestos_rg = drg.get("impuesto", [])
+    id_iva = next((i.get("estadoImpuesto") for i in impuestos_rg if i.get("idImpuesto") == 30), "")  # 30 es IVA
+    id_ig = next((i.get("estadoImpuesto") for i in impuestos_rg if i.get("idImpuesto") in [10, 11]),
+                 "")
+
+    data_mapeada = {
+        "Id_categoria_monotributo": str(cat_mono.get("idCategoria", "")),
+        "Fecha_inscripcion_monotributo": cat_mono.get("periodo"),
+
+        "Es_autonomo": 1 if drg.get("categoriaAutonomo") else 0,
+        "Fecha_inscripcion_autonomo": drg.get("periodo"),  # El periodo del regimen general
+
+        "Id_actividad_principal": id_actividad,
+        "Actividad_monotributista": actividad_obj.get("descripcionActividad"),
+
+        "Id_iva_inscripto": id_iva,
+        "Id_ig_inscripto": id_ig,
+
+        "Fecha_alta_iva": next((i.get("periodo") for i in impuestos_rg if i.get("idImpuesto") == 30), 0),
+        "Fecha_alta_ganancias": next((i.get("periodo") for i in impuestos_rg if i.get("idImpuesto") in [10, 11]), 0),
+
+        "Es_sucesion": dg.get("esSucesion"),
+    }
+    return AfipModel(**data_mapeada)
+def mapear_fila_a_cliente(fila_db: dict, afip_json) -> InputModel:
 
     datos_afip = normalizar_para_pydantic(AfipModel, fila_db)
     datos_bcra = normalizar_para_pydantic(Bcra, fila_db)
@@ -75,7 +115,7 @@ def mapear_fila_a_cliente(fila_db: dict) -> InputModel:
     return InputModel(
         Clientes=Clientes(
             Datos_Impositivos=DatosImpositivos(
-                Afip=AfipModel(**datos_afip)
+                Afip=AfipModel(**datos_afip) #mapear_json_a_afip_model(afip_json)
             ),
             Datos_Personales=DatosPersonales(
                 Aml=Aml(**datos_aml),

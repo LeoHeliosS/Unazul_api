@@ -98,7 +98,7 @@ class Bcra(BaseModel):
     Por_deuda_bcos_gr1: Optional[int]
     Por_deuda_bcos_gr2: Optional[int]
     Por_deuda_bcos_gr3: Optional[int]
-    Por_deuda_bcos_gr4: Optional[int]
+    Por_deuda_bcos_gr4: Optional[float]
     Mto_deuda_sit_mayor_a_1: Optional[int]
     Mto_deuda_sit_mayor_a_1_3m: Optional[int]
     Mto_deuda_sit_mayor_a_1_6m: Optional[int]
