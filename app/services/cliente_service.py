@@ -1,7 +1,7 @@
 from app.repositories.cliente_repository import fetch_features
 
-def get_features(cuit: str):
-    data = fetch_features(cuit)
+async def get_features(cuit: str):
+    data = await fetch_features(cuit)
 
     print("DATA EN SERVICE:", data)
     print("TYPE:", type(data))

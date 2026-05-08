@@ -77,11 +77,24 @@ def mapear_json_a_afip_model(json_data: dict) -> AfipModel:
         "Fecha_alta_ganancias": next((i.get("periodo") for i in impuestos_rg if i.get("idImpuesto") in [10, 11]), 0),
 
         "Es_sucesion": dg.get("esSucesion"),
+
+        #MAPEO CAMPOS VACIOS DE MOMENTO!!!!!
+
+        "Tuvo_cambio_categoria_ult_6m":0,
+        "Tuvo_cambio_categoria_ult_12m": 0,
+        "Tuvo_cambio_categoria_ult_18m":0,
+        "Signo_cambio_categoria":0,
+        "Tuvo_cambio_categoria": 0,
+        "Id_actividad_secundaria": 0,
+        "Id_actividad_tercera": 0,
+        "Fecha_actividad_principal": "",
+        "Categoria_autonomo": "",
+
     }
     return AfipModel(**data_mapeada)
 def mapear_fila_a_cliente(fila_db: dict, afip_json) -> InputModel:
 
-    datos_afip = normalizar_para_pydantic(AfipModel, fila_db)
+    #datos_afip = normalizar_para_pydantic(AfipModel, fila_db)
     datos_bcra = normalizar_para_pydantic(Bcra, fila_db)
     datos_persona = normalizar_para_pydantic(PersonaHumana, fila_db)
     datos_aml = normalizar_para_pydantic(Aml, fila_db)
@@ -115,7 +128,7 @@ def mapear_fila_a_cliente(fila_db: dict, afip_json) -> InputModel:
     return InputModel(
         Clientes=Clientes(
             Datos_Impositivos=DatosImpositivos(
-                Afip=AfipModel(**datos_afip) #mapear_json_a_afip_model(afip_json)
+                Afip=mapear_json_a_afip_model(afip_json)
             ),
             Datos_Personales=DatosPersonales(
                 Aml=Aml(**datos_aml),

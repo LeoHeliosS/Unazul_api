@@ -44,8 +44,8 @@ async def fetch_features(cuit: str):
 
     result = dict(zip(columns, row))
     print("RESULT:", result)
-    #data_afip = await cargar_info_afip(cuit)
-    cliente_json = mapear_fila_a_cliente(result)# ,data_afip)
+    data_afip = await cargar_info_afip(cuit)
+    cliente_json = mapear_fila_a_cliente(result,data_afip)
 
     cursor.close()
     release_connection(conn)

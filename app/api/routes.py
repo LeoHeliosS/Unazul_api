@@ -30,7 +30,7 @@ async def cliente_endpoint(
         raise HTTPException(status_code=400, detail="CUIT inválido")
 
     try:
-        data = get_features(cuit)
+        data = await get_features(cuit)
 
         if not data:
             raise HTTPException(status_code=404, detail="No encontrado")
