@@ -40,14 +40,10 @@ def normalizar_fila_individual(fila_db):
     return id_tipo_cliente_final
 
 def mapear_json_a_afip_model(json_data: dict) -> AfipModel:
-    # --- PASO 1: Normalización de secciones (Evita el AttributeError) ---
-    # Usamos "or {}" para que si el valor es None, se asigne un dict vacío
     dg = json_data.get("datosGenerales") or {}
     dm = json_data.get("datosMonotributo") or {}
     drg = json_data.get("datosRegimenGeneral") or {}
 
-    # --- PASO 2: Extracción de Actividad Principal ---
-    # Buscamos en Monotributo, si es None, buscamos la primera del Regimen General
     actividad_mono = dm.get("actividadMonotributista") if dm else None
     lista_actividades_rg = drg.get("actividad", [])
     actividad_rg = lista_actividades_rg[0] if lista_actividades_rg else {}
@@ -55,46 +51,35 @@ def mapear_json_a_afip_model(json_data: dict) -> AfipModel:
     actividad_obj = actividad_mono or actividad_rg
     id_actividad = actividad_obj.get("idActividad") or actividad_obj.get("idActivity")
 
-    # --- PASO 3: Categoría Monotributo (Seguro) ---
     cat_mono = dm.get("categoriaMonotributo") or {}
 
-    # --- PASO 4: Impuestos (IVA y Ganancias) ---
     impuestos_rg = drg.get("impuesto", [])
 
-    # Buscamos los códigos: 30=IVA, 10=Ganancias Sociedades, 11=Ganancias Personas
     info_iva = next((i for i in impuestos_rg if i.get("idImpuesto") == 30), {})
     info_gan = next((i for i in impuestos_rg if i.get("idImpuesto") in [10, 11]), {})
-
-    # --- PASO 5: Mapeo final al modelo ---
     data_mapeada = {
         "Id_categoria_monotributo": str(cat_mono.get("idCategoria", "")),
         "Fecha_inscripcion_monotributo": cat_mono.get("periodo"),
-
         "Es_autonomo": 1 if drg.get("categoriaAutonomo") else 0,
         "Fecha_inscripcion_autonomo": drg.get("periodo") if drg else None,
-
         "Id_actividad_principal": id_actividad,
         "Actividad_monotributista": actividad_obj.get("descripcionActividad"),
-
         "Id_iva_inscripto": info_iva.get("estadoImpuesto", ""),
         "Id_ig_inscripto": info_gan.get("estadoImpuesto", ""),
-
         "Fecha_alta_iva": info_iva.get("periodo", 0),
         "Fecha_alta_ganancias": info_gan.get("periodo", 0),
-
         "Es_sucesion": dg.get("esSucesion", "NO"),
         "Categoria_autonomo": drg.get("categoriaAutonomo"),
 
-        # Campos que no vienen en este JSON pero están en tu modelo
-        "Tuvo_cambio_categoria": 0,
         # --- CAMPOS FALTANTES PARA EVITAR EL VALIDATION ERROR ---
+        "Tuvo_cambio_categoria": 0,
         "Tuvo_cambio_categoria_ult_6m": 0,
         "Tuvo_cambio_categoria_ult_12m": 0,
         "Tuvo_cambio_categoria_ult_18m": 0,
         "Signo_cambio_categoria": 0,
         "Id_actividad_secundaria": 0,
         "Id_actividad_tercera": 0,
-        "Fecha_actividad_principal": actividad_obj.get("periodo", "0") # Usamos el periodo de la actividad encontrada
+        "Fecha_actividad_principal": actividad_obj.get("periodo", "0") # Usamos el periodo de la actividad encontrada?
     }
 
     return AfipModel(**data_mapeada)

@@ -4,8 +4,8 @@ from psycopg2 import pool
 from app.config import settings
 
 connection_pool = psycopg2.pool.SimpleConnectionPool(
-    1,
-    10,
+    settings.DB_MIN_CONN,
+    settings.DB_MAX_CONN,
     host=settings.DB_HOST,
     port=settings.DB_PORT,
     database=settings.DB_NAME,

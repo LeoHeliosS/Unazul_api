@@ -17,8 +17,6 @@ WSAA_URL =  "https://wsaa.afip.gov.ar/ws/services/LoginCms?wsdl"
 
 def crear_tra():
     now = datetime.now(UTC)
-    print("LOCAL:", datetime.now())
-    print("UTC:", datetime.now(UTC))
     generation = (now - timedelta(minutes=10)).strftime('%Y-%m-%dT%H:%M:%SZ')
     expiration = (now + timedelta(minutes=10)).strftime('%Y-%m-%dT%H:%M:%SZ')
 
@@ -58,7 +56,6 @@ def firmar_tra(tra_xml):
 
 async def login():
     tra = crear_tra()
-    print("TRA A ENVIAR:\n", tra)
     cms = firmar_tra(tra)
 
     client = Client(WSAA_URL)

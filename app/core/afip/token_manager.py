@@ -17,17 +17,13 @@ async def cargar_token():
     try:
         with open(TOKEN_FILE, "r") as f:
             data = json.load(f)
-
         exp_str = data["expiration"]
-
-        # 🔥 eliminar timezone correctamente
         if exp_str.endswith("Z"):
             exp_str = exp_str.replace("Z", "")
         else:
             exp_str = exp_str[:-6]  # corta "-03:00"
 
         exp = datetime.fromisoformat(exp_str)
-
         if datetime.utcnow() < (exp - timedelta(minutes=5)):
             return data["token"], data["sign"]
 

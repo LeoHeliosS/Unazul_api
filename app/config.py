@@ -6,10 +6,10 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: str
-
     API_KEY: str
-
-    RATE_LIMIT: str = "20/minute"
+    RATE_LIMIT: str = "60/minute"
+    DB_MIN_CONN: str
+    DB_MAX_CONN: str
 
     class Config:
         env_file = "../.env"
