@@ -53,27 +53,9 @@ def clean_nones_with_model(data: dict, model_class: type[BaseModel]) -> dict:
                 "Id_tipo_cliente_mes_1": ["0", "0", "0", "0"],
                 "Id_tipo_cliente_mes_2": ["0", "0", "0", "0"],
                 "Id_tipo_cliente_mes_3": ["0", "0", "0", "0"],
-                "Fecha_alta_ccart_vigente": None,
-                "Fecha_alta_lh_vigente": None,
-                "Fecha_alta_refi_vigente": None,
-                "Fecha_alta_repro_vigente": None,
-                "Fecha_nacimiento": None,
-                "Fecha_alta_cliente": None,
-                "Vz_fec_act_mod_1": None,
-                "Vz_fec_act_mod_2": None,
-                "Vz_fec_act_mod_3": None,
-                "Fecha_alta_cuenta_sueldo": None,
-                "Fecha_alta_acuerdo_cc": None,
-                "Fecha_aumento_limite_transitorio": None,
-                "Fecha_aumento_limite_compra": None,
-                "Date1": None,
-                "Date2": None,
-                "Date3": None,
-                "Date4": None,
-                "Date5": None,
-                "Fecha_ult_proceso_calif": None,
                 'Fecha_alta_cliente':'19000101',
-                'Vz_fecha_actualizacion':'19000101'
+                'Vz_fecha_actualizacion':'19000101',
+                'Fecha_ult_hab_acreditado':["19000101"]
 
             }
 

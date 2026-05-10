@@ -32,16 +32,16 @@ class VarNumTextExtendedModel(BaseModel):
 class ScoringResultModel(BaseModel):
     Score: Optional[str] = None
     Scorename: Optional[str] = None
-    Reasoncode: List[Any] = []
+    Reasoncode: Optional[List[Any]] = []
     Index: Optional[str] = None
     Scorefinal: Optional[str] = None
-    Tabla: List[Any] = []
+    Tabla: Optional[List[Any]] = []
 
 class PoliticasResultModel(BaseModel):
     Text: Optional[str] = None
     DecisionCategory: Optional[str] = None
     ReasonCodeTable: List[Any] = []
-    SortedReasonCodeTable: List[Any] = []
+    SortedReasonCodeTable: Optional[List[Any]] = []
 
 class DescripcionCodigoModel(BaseModel):
     Descripcion: Optional[str] = None

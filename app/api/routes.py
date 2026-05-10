@@ -62,7 +62,7 @@ async def riesgo_cliente_endpoint(
     try:
 
         #GET -> COMPARO CONTRA FRONT -> INSERT -> EXPERIAN
-        data = get_features(cuit)
+        data = await get_features(cuit)
         if not data:
             raise HTTPException(status_code=404, detail="No encontrado")
 

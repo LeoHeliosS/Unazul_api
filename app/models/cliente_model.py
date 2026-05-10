@@ -32,7 +32,7 @@ class AfipModel(BaseModel):
     Id_actividad_principal: Optional[int]
     Id_actividad_secundaria: Optional[int]
     Id_actividad_tercera: Optional[int]
-    Fecha_actividad_principal: Optional[str]
+    Fecha_actividad_principal: Optional[int]
     Id_iva_inscripto: Optional[str]
     Id_ig_inscripto: Optional[str]
     Fecha_alta_iva: Optional[int]
