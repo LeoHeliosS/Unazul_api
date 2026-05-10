@@ -48,7 +48,6 @@ def clean_nones_with_model(data: dict, model_class: type[BaseModel]) -> dict:
                 "Nro_sucursal_cuenta_tc": ["0", "0", "0", "0"],
                 "Marca_tc": ["0", "0", "0", "0"],
                 "Fecha_alta_tc": ["0", "0", "0", "0"],
-                "Sit_Deuda_Entidades": ["11", "11","11", "11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11"],
                 "Id_tipo_cliente": ["0", "0", "0", "0"],
                 "Id_tipo_cliente_mes_1": ["0", "0", "0", "0"],
                 "Id_tipo_cliente_mes_2": ["0", "0", "0", "0"],

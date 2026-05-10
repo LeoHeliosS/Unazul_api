@@ -3,6 +3,11 @@ from app.models.cliente_model import *
 
 def normalizar_para_pydantic(modelo_cls, datos_planos: dict):
     datos_normalizados = {}
+    config_relleno = {
+        "Id_entidades_deuda": {"longitud": 25, "defecto": "000"},
+        "Sit_deuda_entidades": {"longitud": 25, "defecto": "11"},
+        "Mto_deuda_entidades": {"longitud": 25, "defecto": 0}
+    }
     for nombre_campo, info_campo in modelo_cls.model_fields.items():
         valor = datos_planos.get(nombre_campo.lower())
         if isinstance(valor, str) and ';' in valor:
@@ -13,11 +18,19 @@ def normalizar_para_pydantic(modelo_cls, datos_planos: dict):
         es_tipo_lista = "List" in str(info_campo.annotation) or "list" in str(info_campo.annotation)
         if es_tipo_lista:
             if valor in [None, '0', 0, '']:
-                datos_normalizados[nombre_campo] = []
+                lista_temp = []
             elif not isinstance(valor, list):
-                datos_normalizados[nombre_campo] = [valor]
+                lista_temp = [valor]
             else:
-                datos_normalizados[nombre_campo] = valor
+                lista_temp = valor
+
+            if nombre_campo in config_relleno:
+                conf = config_relleno[nombre_campo]
+                actual = lista_temp[:conf["longitud"]]
+                faltantes = conf["longitud"] - len(actual)
+                datos_normalizados[nombre_campo] = actual + [conf["defecto"]] * faltantes
+            else:
+                datos_normalizados[nombre_campo] = lista_temp
         else:
             datos_normalizados[nombre_campo] = valor
 
